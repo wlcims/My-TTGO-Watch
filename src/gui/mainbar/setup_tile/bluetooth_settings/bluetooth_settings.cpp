@@ -21,6 +21,8 @@
  */
 #include "config.h"
 #include "bluetooth_settings.h"
+#include "bluetooth_pairing.h"
+#include "bluetooth_call.h"
 
 #include "gui/mainbar/mainbar.h"
 #include "gui/mainbar/setup_tile/setup.h"
@@ -100,7 +102,7 @@ void bluetooth_settings_tile_setup( void ) {
     lv_obj_set_event_cb( bluetooth_advertising_onoff, bluetooth_advertising_onoff_event_handler );
     lv_obj_t *bluetooth_advertising_label = lv_label_create( bluetooth_advertising_cont, NULL);
     lv_obj_add_style( bluetooth_advertising_label, LV_OBJ_PART_MAIN, &bluetooth_settings_style  );
-    lv_label_set_text( bluetooth_advertising_label, "advertising");
+    lv_label_set_text( bluetooth_advertising_label, "visibility");
     lv_obj_align( bluetooth_advertising_label, bluetooth_advertising_cont, LV_ALIGN_IN_LEFT_MID, 5, 0 );
 
     lv_obj_t *bluettoth_info_label_cont = lv_obj_create( bluetooth_settings_tile, NULL );
@@ -109,7 +111,7 @@ void bluetooth_settings_tile_setup( void ) {
     lv_obj_align( bluettoth_info_label_cont, bluetooth_advertising_cont, LV_ALIGN_OUT_BOTTOM_MID, 0, 0 );
     lv_obj_t *bluetooth_info_label = lv_label_create( bluettoth_info_label_cont, NULL);
     lv_obj_add_style( bluetooth_info_label, LV_OBJ_PART_MAIN, &bluetooth_settings_style  );
-    lv_label_set_text( bluetooth_info_label, "increase battery life");
+    lv_label_set_text( bluetooth_info_label, "increases battery life");
     lv_obj_align( bluetooth_info_label, bluettoth_info_label_cont, LV_ALIGN_IN_LEFT_MID, 5, 0 );
     
     lv_obj_t *bluetooth_standby_cont = lv_obj_create( bluetooth_settings_tile, NULL );
@@ -124,7 +126,7 @@ void bluetooth_settings_tile_setup( void ) {
     lv_obj_set_event_cb( bluetooth_standby_onoff, bluetooth_standby_onoff_event_handler );
     lv_obj_t *bluetooth_standby_label = lv_label_create( bluetooth_standby_cont, NULL);
     lv_obj_add_style( bluetooth_standby_label, LV_OBJ_PART_MAIN, &bluetooth_settings_style  );
-    lv_label_set_text( bluetooth_standby_label, "allway on");
+    lv_label_set_text( bluetooth_standby_label, "always on");
     lv_obj_align( bluetooth_standby_label, bluetooth_standby_cont, LV_ALIGN_IN_LEFT_MID, 5, 0 );
 
     if ( blectl_get_advertising() ) {
@@ -141,6 +143,9 @@ void bluetooth_settings_tile_setup( void ) {
     else {
         lv_switch_off( bluetooth_standby_onoff, LV_ANIM_OFF );
     }
+
+    bluetooth_pairing_tile_setup();
+    bluetooth_call_tile_setup();
 }
 
 static void enter_bluetooth_setup_event_cb( lv_obj_t * obj, lv_event_t event ) {
